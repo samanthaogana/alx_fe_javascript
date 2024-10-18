@@ -35,8 +35,11 @@ function displayrandomQuote() {
     
         const addButton = document.createElement('button');
         addButton.textContent = 'Add Quote';
-        addButton.onclick = addQuote;
-    
+        addButton.addEventListener('click', function() {
+        const newQuoteText = document.getElementById('newQuoteText').value;
+        const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+        });
+        
         form.appendChild(inputText);
         form.appendChild(inputCategory);
         form.appendChild(addButton);
