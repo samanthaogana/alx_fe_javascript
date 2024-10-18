@@ -8,7 +8,22 @@ function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
     console.log(`"${randomQuote.text}" - ${randomQuote.category}`);
-
-    
 }
 
+function displayQuotes() {
+    const quoteList = document.getElementById('quotelist');
+    quoteList.innerHTML = '';
+
+    quotes.forEach(quote => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `"${quote.text}" - ${quote.category}`;
+        quoteList.appendChild(listItem);
+    });
+
+    function addQuote() {
+        const newQuoteText = document.getElementById('newQuoteText').value;
+        const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+
+        
+    }
+}
