@@ -20,7 +20,7 @@ function displayrandomQuote() {
         quoteList.appendChild(listItem);
     });
 
-    function createAddQuoteForm() {
+    function AddQuote() {
         const form = document.createElement('div');
         
         const inputText = document.createElement('input');
