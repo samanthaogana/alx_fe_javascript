@@ -39,7 +39,7 @@ function displayrandomQuote() {
         const newQuoteText = document.getElementById('newQuoteText').value;
         const newQuoteCategory = document.getElementById('newQuoteCategory').value;
         });
-        
+
         form.appendChild(inputText);
         form.appendChild(inputCategory);
         form.appendChild(addButton);
@@ -47,4 +47,13 @@ function displayrandomQuote() {
         document.body.appendChild(form);
     }
     
+    const quotes = JSON.parse(localStorage.getItem('quotes')) || [
+    { text: "Working hard for something you hate is called stress. Working hard for something you love is called passion.", category: "Motivational" },
+    { text: "One of the greatest regrets in life is being what others would want you to be, rather than being yourself.", category: "Inspirational" },
+    { text: "Life moves pretty fast. If you don't stop and look around for a while, you could miss it.", category: "Life" }
+    ];
+
+    function saveQuotesToLocalStorage() {
+        localStorage.setItem('quotes', JSON.stringify(quotes));
+    }
 }
