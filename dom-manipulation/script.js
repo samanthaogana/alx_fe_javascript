@@ -10,7 +10,7 @@ function showRandomQuote() {
     console.log(`"${randomQuote.text}" - ${randomQuote.category}`);
 }
 
-function displayQuotes() {
+function displayrandomQuote() {
     const quoteList = document.getElementById('quotelist');
     quoteList.innerHTML = '';
 
@@ -24,6 +24,6 @@ function displayQuotes() {
         const newQuoteText = document.getElementById('newQuoteText').value;
         const newQuoteCategory = document.getElementById('newQuoteCategory').value;
 
-        
+
     }
 }
