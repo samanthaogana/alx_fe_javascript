@@ -56,4 +56,18 @@ function displayrandomQuote() {
     function saveQuotesToLocalStorage() {
         localStorage.setItem('quotes', JSON.stringify(quotes));
     }
+
+    function exportQuotes() {
+        const dataStr = JSON.stringify(quotes);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = 'quotes.json';
+        downloadLink.click();
+
+  URL.revokeObjectURL(url); 
+
+    }
 }
