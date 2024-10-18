@@ -38,6 +38,16 @@ function displayrandomQuote() {
         addButton.addEventListener('click', function() {
         const newQuoteText = document.getElementById('newQuoteText').value;
         const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+
+        const exportButton = document.createElement('button');
+        exportButton.textContent = 'Export Quotes';
+        exportButton.addEventListener('click', exportQuotes);
+
+        const importFileInput = document.createElement('input');
+        importFileInput.type = 'file';
+        importFileInput.id = 'importFile';
+        importFileInput.accept = '.json';
+        importFileInput.addEventListener('change', importFromJsonFile);
         });
 
         form.appendChild(inputText);
@@ -68,6 +78,15 @@ function displayrandomQuote() {
         downloadLink.click();
 
   URL.revokeObjectURL(url); 
-
-    }
+}
+function importFromJsonFile(event) {
+    const fileReader = new FileReader();
+    fileReader.onload = function(event) {
+      const importedQuotes = JSON.parse(event.target.result);
+      quotes.push(...importedQuotes);
+      saveQuotes();
+      alert('Quotes imported successfully!');
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
 }
