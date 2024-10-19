@@ -120,15 +120,18 @@ function displayrandomQuote() {
         const filteredQuotes = quotes.filter(quote => quote.category === selectedCategory);
         quoteDisplay(filteredQuotes);
       }  
+    }
 
-      function fetchQuotesFromServer() {
-        fetch('https://jsonplaceholder.typicode.com/todos')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => console.error('Error fetching data:', error));
-      }
+      async function fetchQuotesFromServer() {
+        try {
+          const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+          const data = await response.json();
+      
+          const serverQuotes = data.map(post => ({
+            text: post.title,
+            category: post.body.slice(0, 10) // Just an example to get a part of the body as the category
+          }));
+        }
 
       function updateLocalStorage(serverQuotes) {
         const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
