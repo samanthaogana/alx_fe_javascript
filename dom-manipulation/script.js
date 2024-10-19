@@ -133,6 +133,28 @@ function displayrandomQuote() {
           }));
         }
 
+        async function postQuotesToServer(newQuote) {
+            try {
+              const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newQuote)
+              });
+          
+              if (response.ok) {
+                const data = await response.json();
+                console.log('Quote posted:', data);
+              } else {
+                console.error('Failed to post quote:', response.statusText);
+              }
+            } catch (error) {
+              console.error('Error posting quote to server:', error);
+            }
+          }
+          
+
       function updateLocalStorage(serverQuotes) {
         const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
         const mergedQuotes = [...serverQuotes, ...localQuotes];
