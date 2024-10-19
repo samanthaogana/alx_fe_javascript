@@ -98,6 +98,29 @@ function displayrandomQuote() {
       }
       
 
+    }
+
+    function quoteDisplay(filteredQuotes) {
+      const quoteList = document.getElementById('quoteList');
+      quoteList.innerHTML = '';
+      filteredQuotes.forEach(quote => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `"${quote.text}" - ${quote.category}`;
+        quoteList.appendChild(listItem);
+      });
+    }
+    
+    function filterQuotes() {
+      const selectedCategory = document.getElementById('categoryFilter').value;
+      saveFilterToLocalStorage(selectedCategory);
+    
+      if (selectedCategory === 'all') {
+        quoteDisplay(quotes);
+      } else {
+        const filteredQuotes = quotes.filter(quote => quote.category === selectedCategory);
+        quoteDisplay(filteredQuotes);
+      }  
+
 
     const quotes = JSON.parse(localStorage.getItem('quotes')) || [
     { text: "Working hard for something you hate is called stress. Working hard for something you love is called passion.", category: "Motivational" },
