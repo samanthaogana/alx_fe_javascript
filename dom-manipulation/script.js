@@ -121,7 +121,48 @@ function displayrandomQuote() {
         quoteDisplay(filteredQuotes);
       }  
 
+      function fetchData() {
+        fetch('https://jsonplaceholder.typicode.com/todos')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => console.error('Error fetching data:', error));
+      }
 
+      function updateLocalStorage(serverQuotes) {
+        const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
+        const mergedQuotes = [...serverQuotes, ...localQuotes];
+        
+        
+        const uniqueQuotes = Array.from(new Set(mergedQuotes.map(quote => quote.id)))
+                                  .map(id => mergedQuotes.find(quote => quote.id === id));
+        
+        
+        const finalQuotes = uniqueQuotes.sort((a, b) => b.id - a.id); 
+        
+        localStorage.setItem('quotes', JSON.stringify(finalQuotes));
+        quotes.length = 0; 
+        quotes.push(...finalQuotes); 
+        populateCategories();
+        filterQuotes();
+      }
+      
+      document.getElementById('syncButton').addEventListener('click', syncWithServer);
+
+      function notifyUser(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 3000);
+      }
+      
+
+      setInterval(fetchDataFromServer, 10000); 
+
+      
     const quotes = JSON.parse(localStorage.getItem('quotes')) || [
     { text: "Working hard for something you hate is called stress. Working hard for something you love is called passion.", category: "Motivational" },
     { text: "One of the greatest regrets in life is being what others would want you to be, rather than being yourself.", category: "Inspirational" },
