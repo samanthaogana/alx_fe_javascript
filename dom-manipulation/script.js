@@ -154,24 +154,61 @@ function displayrandomQuote() {
             }
           }
           
-
-      function updateLocalStorage(serverQuotes) {
-        const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
-        const mergedQuotes = [...serverQuotes, ...localQuotes];
-        
-        
-        const uniqueQuotes = Array.from(new Set(mergedQuotes.map(quote => quote.id)))
-                                  .map(id => mergedQuotes.find(quote => quote.id === id));
-        
-        
-        const finalQuotes = uniqueQuotes.sort((a, b) => b.id - a.id); 
-        
-        localStorage.setItem('quotes', JSON.stringify(finalQuotes));
-        quotes.length = 0; 
-        quotes.push(...finalQuotes); 
-        populateCategories();
-        filterQuotes();
-      }
+          async function syncQuotes() {
+            try {
+              // Fetch quotes from server
+              const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+              const data = await response.json();
+          
+              // Simulate server data structure
+              const serverQuotes = data.map(post => ({
+                text: post.title,
+                category: post.body.slice(0, 10) // Example category
+              }));
+          
+              // Simple conflict resolution: server data takes precedence
+              const updatedQuotes = [...serverQuotes, ...quotes];
+              const uniqueQuotes = Array.from(new Set(updatedQuotes.map(JSON.stringify))).map(JSON.parse);
+          
+              quotes.length = 0;
+              quotes.push(...uniqueQuotes);
+          
+              saveQuotesToLocalStorage();
+              populateCategories();
+              filterQuotes();
+          
+              // Notify user about the update
+              notifyUser('Quotes fetched and updated from server.');
+          
+              // POST local quotes to server
+              await postLocalQuotesToServer(quotes);
+            } catch (error) {
+              console.error('Error syncing quotes:', error);
+            }
+          }
+          
+          async function postLocalQuotesToServer(localQuotes) {
+            try {
+              const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(localQuotes),
+              });
+          
+              if (!response.ok) {
+                throw new Error('Failed to post quotes to server');
+              }
+          
+              const result = await response.json();
+              console.log('Quotes posted to server:', result);
+            } catch (error) {
+              console.error('Error posting quotes to server:', error);
+            }
+          }
+          
+      
       
       document.getElementById('syncButton').addEventListener('click', syncWithServer);
 
