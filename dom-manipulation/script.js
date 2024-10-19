@@ -96,7 +96,6 @@ function displayrandomQuote() {
           alert('Please fill out both fields.');
         }
       }
-      
 
     }
 
@@ -222,7 +221,7 @@ function displayrandomQuote() {
       }
       
 
-      setInterval(fetchDataFromServer, 10000); 
+      setInterval(fetchQuotesFromServer, 10000); 
 
       
     const quotes = JSON.parse(localStorage.getItem('quotes')) || [
