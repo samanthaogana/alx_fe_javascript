@@ -152,6 +152,7 @@ function displayrandomQuote() {
               console.error('Error posting quote to server:', error);
             }
           }
+        
           
           async function syncQuotes() {
             try {
