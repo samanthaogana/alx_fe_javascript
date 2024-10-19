@@ -57,6 +57,48 @@ function displayrandomQuote() {
         document.body.appendChild(form);
     }
     
+    function populateCategories() {
+        const categoryFilter = document.getElementById('categoryFilter');
+        const uniqueCategories = [...new Set(quotes.map(quote => quote.category))];
+
+        
+     categoryFilter.innerHTML = '<option value="all">All Categories</option>'
+
+     uniqueCategories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+      });
+    
+      categoryFilter.value = loadFilterFromLocalStorage();
+    }
+
+    function addQuote() {
+        const newQuoteText = document.getElementById('newQuoteText').value;
+        const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+      
+        if (newQuoteText.trim() !== '' && newQuoteCategory.trim() !== '') {
+          const newQuote = { text: newQuoteText, category: newQuoteCategory };
+          quotes.push(newQuote);
+          saveQuotesToLocalStorage();
+      
+          
+          const categories = [...new Set(quotes.map(quote => quote.category))];  
+          saveCategoriesToLocalStorage(categories);  
+          populateCategories();  
+          filterQuotes();  
+         
+      
+          document.getElementById('newQuoteText').value = '';
+          document.getElementById('newQuoteCategory').value = '';
+        } else {
+          alert('Please fill out both fields.');
+        }
+      }
+      
+
+
     const quotes = JSON.parse(localStorage.getItem('quotes')) || [
     { text: "Working hard for something you hate is called stress. Working hard for something you love is called passion.", category: "Motivational" },
     { text: "One of the greatest regrets in life is being what others would want you to be, rather than being yourself.", category: "Inspirational" },
@@ -66,6 +108,14 @@ function displayrandomQuote() {
     function saveQuotesToLocalStorage() {
         localStorage.setItem('quotes', JSON.stringify(quotes));
     }
+
+    function saveFilterToLocalStorage(filter) {
+        localStorage.setItem('selectedFilter', filter);
+      }
+      
+      function loadFilterFromLocalStorage() {
+        return localStorage.getItem('selectedFilter') || 'all';
+      }
 
     function exportQuotes() {
         const dataStr = JSON.stringify(quotes);
