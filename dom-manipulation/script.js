@@ -178,7 +178,7 @@ function displayrandomQuote() {
               filterQuotes();
           
               // Notify user about the update
-              notifyUser('Quotes fetched and updated from server.');
+              notifyUser('Quotes synced with server!');
           
               // POST local quotes to server
               await postLocalQuotesToServer(quotes);
